@@ -1,6 +1,6 @@
 import pandas as pd
 
-current_df = pd.read_csv("data/transformed/openweather.csv")
+current_df = pd.read_csv("data/transformed/fact_weather_current.csv")
 
 dim_location = (
     current_df[

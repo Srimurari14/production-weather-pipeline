@@ -52,4 +52,4 @@ data = data[[
     'weather_description'
 ]]
 
-data.to_csv('data/transformed/openweather.csv', index=False)
+data.to_csv('data/transformed/fact_weather_current.csv', index=False)
