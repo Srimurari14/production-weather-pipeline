@@ -2,3 +2,4 @@
 .env
 /data
 /notebooks
+scripts/__pycache__

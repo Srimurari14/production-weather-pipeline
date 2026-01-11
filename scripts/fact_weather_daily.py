@@ -1,5 +1,6 @@
 import pandas as pd
 from configs.cities import CITIES
+from scripts.validations import validate_fact_weather_daily
 
 all_daily = []
 
@@ -45,5 +46,7 @@ for city_cfg in CITIES:
     all_daily.append(df)
 
 fact_weather_daily = pd.concat(all_daily, ignore_index=True)
+
+validate_fact_weather_daily(fact_weather_daily)
 
 fact_weather_daily.to_csv('data/transformed/fact_weather_daily.csv', index=False)
