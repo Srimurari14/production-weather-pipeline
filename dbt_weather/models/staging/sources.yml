@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw
+    database: WEATHER_DB
+    schema: RAW
+    tables:
+      - name: dim_location
+      - name: fact_weather_current
+      - name: fact_weather_daily
