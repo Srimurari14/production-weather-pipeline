@@ -1,0 +1,137 @@
+version: 2
+
+models:
+
+  - name: dim_location
+    description: "Dimension table containing unique weather observation locations."
+    columns:
+      - name: location_id
+        description: "Unique identifier for a weather location."
+        tests:
+          - not_null
+          - unique
+
+      - name: city
+        description: "City name of the weather location."
+        tests:
+          - not_null
+
+      - name: country
+        description: "ISO country code of the location."
+        tests:
+          - not_null
+
+      - name: latitude
+        description: "Latitude coordinate of the location."
+        tests:
+          - not_null
+
+      - name: longitude
+        description: "Longitude coordinate of the location."
+        tests:
+          - not_null
+
+
+  - name: fact_weather_current
+    description: "Fact table containing current weather observations per location and timestamp."
+    columns:
+      - name: location_id
+        description: "Foreign key referencing dim_location."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_location')
+              field: location_id
+
+      - name: city
+        description: "City name at the time of observation."
+
+      - name: country
+        description: "Country code at the time of observation."
+
+      - name: latitude
+        description: "Latitude of the observation location."
+
+      - name: longitude
+        description: "Longitude of the observation location."
+
+      - name: date_time
+        description: "UTC timestamp of the current weather observation."
+        tests:
+          - not_null
+
+      - name: temperature
+        description: "Observed air temperature in Celsius."
+        tests:
+          - not_null
+
+      - name: feels_like
+        description: "Perceived temperature accounting for humidity and wind."
+
+      - name: temp_min
+        description: "Minimum observed temperature at the time of observation."
+
+      - name: temp_max
+        description: "Maximum observed temperature at the time of observation."
+
+      - name: pressure
+        description: "Atmospheric pressure in hPa."
+
+      - name: humidity
+        description: "Relative humidity percentage."
+
+      - name: wind_speed
+        description: "Wind speed at the time of observation."
+
+      - name: wind_direction
+        description: "Wind direction in degrees."
+
+      - name: cloud_cover
+        description: "Cloud cover percentage."
+
+      - name: weather_description
+        description: "Textual description of weather conditions."
+
+
+  - name: fact_weather_daily
+    description: "Fact table containing daily aggregated weather metrics per location."
+    columns:
+      - name: location_id
+        description: "Foreign key referencing dim_location."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_location')
+              field: location_id
+
+      - name: date
+        description: "Calendar date of the daily weather aggregation."
+        tests:
+          - not_null
+
+      - name: temp_mean
+        description: "Mean daily air temperature in Celsius."
+
+      - name: temp_max
+        description: "Maximum daily air temperature in Celsius."
+
+      - name: temp_min
+        description: "Minimum daily air temperature in Celsius."
+
+      - name: precipitation
+        description: "Total daily precipitation in millimeters."
+
+      - name: rain
+        description: "Total daily rainfall in millimeters."
+
+      - name: snowfall
+        description: "Total daily snowfall in centimeters."
+
+      - name: wind_speed
+        description: "Maximum daily wind speed."
+
+      - name: wind_direction
+        description: "Dominant wind direction for the day."
+
+      - name: daylight_duration
+        description: "Total daylight duration for the day in seconds."
