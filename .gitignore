@@ -10,6 +10,8 @@ dbt_weather/logs/
 dbt_weather/dbt_packages/
 dbt_weather/.user.yml
 
+logs/
+
 data/raw/
 data/transformed/
 *.csv
