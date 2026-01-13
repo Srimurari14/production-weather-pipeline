@@ -1,3 +1,5 @@
+{{ config(materialized='table') }}
+
 SELECT
     location_id,
     date,
