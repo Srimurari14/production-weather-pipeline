@@ -2,6 +2,7 @@ import os
 import json
 import requests
 from datetime import datetime
+from configs.cities import CITIES
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,29 +13,36 @@ if not API_KEY:
     raise ValueError("OPENWEATHER_API_KEY not found in environment")
 
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+RUN_DATE = datetime.utcnow().strftime("%Y-%m-%d")
 
-params = {
-    "q": "Washington DC,US",
-    "appid": API_KEY,
-    "units": "metric"
-}
+for city_cfg in CITIES:
+    city = city_cfg["city"]
+    country = city_cfg["country"]
 
-response = requests.get(BASE_URL, params=params, timeout=10)
+    print(f"Ingesting current weather for {city}")
 
-if response.status_code != 200:
-    raise Exception(
-        f"API call failed: {response.status_code} - {response.text}"
-    )
+    params = {
+        "q": f"{city},{country}",
+        "appid": API_KEY,
+        "units": "metric"
+    }
 
-data = response.json()
+    response = requests.get(BASE_URL, params=params, timeout=10)
 
-today = datetime.utcnow().strftime("%Y-%m-%d")
-output_dir = f"data/raw/openweather/{today}"
-os.makedirs(output_dir, exist_ok=True)
+    if response.status_code != 200:
+        raise Exception(
+            f"API call failed for {city}: {response.status_code} - {response.text}"
+        )
 
-output_path = f"{output_dir}/washingtondc.json"
+    data = response.json()
 
-with open(output_path, "w") as f:
-    json.dump(data, f, indent=2)
+    output_dir = f"data/raw/openweather/{RUN_DATE}"
+    os.makedirs(output_dir, exist_ok=True)
 
-print(f"Raw weather data saved to {output_path}")
+    city_slug = city.lower().replace(" ", "").replace(".", "")
+    output_path = f"{output_dir}/{city_slug}.json"
+
+    with open(output_path, "w") as f:
+        json.dump(data, f, indent=2)
+
+print("Raw weather ingestion completed")
