@@ -1,9 +1,8 @@
-import pandas as pd
-from configs.cities import CITIES
-from scripts.validations import validate_fact_weather_daily
+def run_fact_weather_daily():
+    import pandas as pd
+    from configs.cities import CITIES
+    from scripts.validations import validate_fact_weather_daily
 
-
-def fact_weather_daily():
     all_daily = []
 
     for city_cfg in CITIES:
@@ -52,6 +51,3 @@ def fact_weather_daily():
     validate_fact_weather_daily(fact_weather_daily)
 
     fact_weather_daily.to_csv('data/transformed/fact_weather_daily.csv', index=False)
-
-if __name__ == "__main__":
-    fact_weather_daily()
