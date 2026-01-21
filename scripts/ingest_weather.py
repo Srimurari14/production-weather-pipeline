@@ -1,48 +1,45 @@
-import os
-import json
-import requests
-from datetime import datetime
-from configs.cities import CITIES
-from dotenv import load_dotenv
+def run_ingest_weather():
+    import os
+    import json
+    import requests
+    from datetime import datetime
+    from configs.cities import CITIES
 
-load_dotenv()
+    API_KEY = os.environ.get("OPENWEATHER_API_KEY")
+    if not API_KEY:
+        raise ValueError("OPENWEATHER_API_KEY not found in environment")
 
+    BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+    RUN_DATE = datetime.utcnow().strftime("%Y-%m-%d")
 
-API_KEY = os.getenv("OPENWEATHER_API_KEY")
-if not API_KEY:
-    raise ValueError("OPENWEATHER_API_KEY not found in environment")
+    for city_cfg in CITIES:
+        city = city_cfg["city"]
+        country = city_cfg["country"]
 
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
-RUN_DATE = datetime.utcnow().strftime("%Y-%m-%d")
+        print(f"Ingesting current weather for {city}")
 
-for city_cfg in CITIES:
-    city = city_cfg["city"]
-    country = city_cfg["country"]
+        params = {
+            "q": f"{city},{country}",
+            "appid": API_KEY,
+            "units": "metric"
+        }
 
-    print(f"Ingesting current weather for {city}")
+        response = requests.get(BASE_URL, params=params, timeout=10)
 
-    params = {
-        "q": f"{city},{country}",
-        "appid": API_KEY,
-        "units": "metric"
-    }
+        if response.status_code != 200:
+            raise Exception(
+                f"API call failed for {city}: {response.status_code} - {response.text}"
+            )
 
-    response = requests.get(BASE_URL, params=params, timeout=10)
+        data = response.json()
 
-    if response.status_code != 200:
-        raise Exception(
-            f"API call failed for {city}: {response.status_code} - {response.text}"
-        )
+        output_dir = f"data/raw/openweather/{RUN_DATE}"
+        os.makedirs(output_dir, exist_ok=True)
 
-    data = response.json()
+        city_slug = city.lower().replace(" ", "").replace(".", "")
+        output_path = f"{output_dir}/{city_slug}.json"
 
-    output_dir = f"data/raw/openweather/{RUN_DATE}"
-    os.makedirs(output_dir, exist_ok=True)
+        with open(output_path, "w") as f:
+            json.dump(data, f, indent=2)
 
-    city_slug = city.lower().replace(" ", "").replace(".", "")
-    output_path = f"{output_dir}/{city_slug}.json"
-
-    with open(output_path, "w") as f:
-        json.dump(data, f, indent=2)
-
-print("Raw weather ingestion completed")
+    print("Raw weather ingestion completed")
