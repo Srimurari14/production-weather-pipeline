@@ -4,7 +4,11 @@ from scripts.fact_weather_current import run_fact_weather_current
 from scripts.fact_weather_daily import run_fact_weather_daily
 from scripts.upload_to_stage import upload_to_stage
 from scripts.copy_into_raw import copy_into_raw
-from get_snowflake_connection import get_snowflake_connection
+from scripts.get_snowflake_connection import get_snowflake_connection
+
+from dotenv import load_dotenv
+load_dotenv()
+
 
 
 logging.basicConfig(level=logging.INFO)

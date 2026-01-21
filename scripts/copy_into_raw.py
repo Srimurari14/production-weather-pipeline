@@ -8,11 +8,17 @@ def copy_into_raw(conn):
     }
 
     for file, table in mappings.items():
+        cursor.execute(f""" TRUNCATE TABLE WEATHER_DB.RAW.{table}""")
+        
         cursor.execute(f"""
             COPY INTO WEATHER_DB.RAW.{table}
             FROM @WEATHER_DB.RAW.WEATHER_STAGE/{file}
-            FILE_FORMAT = (FORMAT_NAME = WEATHER_DB.RAW.CSV_FORMAT)
-            ON_ERROR = 'FAIL';
+            FILE_FORMAT = (
+                TYPE = CSV
+                FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+                SKIP_HEADER = 1
+            )
+            ON_ERROR = 'ABORT_STATEMENT';
         """)
 
     cursor.close()
