@@ -26,3 +26,6 @@ data/transformed/
 
 *.pem
 *.key
+
+airflow/logs
+airflow/plugins

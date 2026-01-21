@@ -21,8 +21,8 @@ SELECT
 FROM {{ref('stg_fact_weather_current')}}
 
 {% if is_incremental() %}
-  where date_time > (
-      select max(date_time)
-      from {{ this }}
-  )
+where date_time > coalesce(
+    (select max(date_time) from {{ this }}),
+    to_timestamp('1900-01-01')
+)
 {% endif %}
