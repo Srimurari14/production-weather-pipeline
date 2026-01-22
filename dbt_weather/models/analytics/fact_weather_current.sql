@@ -1,7 +1,8 @@
 {{ 
   config(
     materialized = 'incremental',
-    unique_key = ['location_id', 'event_ts']
+    unique_key = ['location_id', 'event_ts'],
+    on_schema_change = 'append_new_columns'
   ) 
 }}
 
