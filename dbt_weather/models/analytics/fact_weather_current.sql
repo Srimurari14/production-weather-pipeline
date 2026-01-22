@@ -1,7 +1,7 @@
 {{ 
   config(
     materialized = 'incremental',
-    unique_key = ['location_id', 'event_ts'],
+    unique_key = ['location_id', 'event_hour'],
     on_schema_change = 'append_new_columns'
   ) 
 }}
@@ -23,8 +23,8 @@ SELECT
 FROM {{ ref('stg_fact_weather_current') }}
 
 {% if is_incremental() %}
-WHERE event_ts > (
-    SELECT COALESCE(MAX(event_ts), TO_TIMESTAMP('1900-01-01'))
+WHERE event_hour > (
+    SELECT COALESCE(MAX(event_hour), TO_TIMESTAMP('1900-01-01'))
     FROM {{ this }}
 )
 {% endif %}
