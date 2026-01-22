@@ -14,5 +14,7 @@ def upload_to_stage(conn, local_dir):
             OVERWRITE = TRUE
             AUTO_COMPRESS = FALSE;
         """)
+    
+        print(f'{file} Upload To Stage Successful')
 
     cursor.close()

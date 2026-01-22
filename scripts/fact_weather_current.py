@@ -1,4 +1,6 @@
 def run_fact_weather_current():
+
+    import os
     import json
     import pandas as pd
     from configs.cities import CITIES
@@ -72,7 +74,9 @@ def run_fact_weather_current():
     validate_dim_location(dim_location)
     validate_fact_weather_current(fact_weather_current, dim_location)
 
-    print(fact_weather_current.date_time.max())
+    print('Max_date:', fact_weather_current.date_time.max())
+
+    os.makedirs("data/transformed", exist_ok=True)
 
     fact_weather_current.to_csv('data/transformed/fact_weather_current.csv', index=False)
     dim_location.to_csv("data/transformed/dim_location.csv", index=False)

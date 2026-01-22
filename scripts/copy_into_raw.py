@@ -21,4 +21,6 @@ def copy_into_raw(conn):
             ON_ERROR = 'ABORT_STATEMENT';
         """)
 
+        print(f'{file} Upload To Table Successful')
+
     cursor.close()

@@ -50,4 +50,6 @@ def run_fact_weather_daily():
 
     validate_fact_weather_daily(fact_weather_daily)
 
+    os.makedirs("data/transformed", exist_ok=True)
+
     fact_weather_daily.to_csv('data/transformed/fact_weather_daily.csv', index=False)

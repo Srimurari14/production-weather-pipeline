@@ -39,6 +39,8 @@ def run_ingest_weather():
         city_slug = city.lower().replace(" ", "").replace(".", "")
         output_path = f"{output_dir}/{city_slug}.json"
 
+        print(output_dir)
+
         with open(output_path, "w") as f:
             json.dump(data, f, indent=2)
 

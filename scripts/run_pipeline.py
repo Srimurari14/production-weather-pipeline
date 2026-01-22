@@ -27,6 +27,8 @@ def run_pipeline():
 
     conn = get_snowflake_connection()
 
+    logger.info("Snowflake connection established successfully")
+
     try:
         upload_to_stage(conn, local_dir="data/transformed")
         copy_into_raw(conn)
