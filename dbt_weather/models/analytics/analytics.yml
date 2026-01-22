@@ -55,7 +55,12 @@ models:
       - name: longitude
         description: "Longitude of the observation location."
 
-      - name: date_time
+      - name: event_ts
+        description: "UTC timestamp of the current weather observation."
+        tests:
+          - not_null
+      
+      - name: event_hour
         description: "UTC timestamp of the current weather observation."
         tests:
           - not_null
