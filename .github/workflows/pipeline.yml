@@ -47,7 +47,7 @@ jobs:
         run: |
           mkdir -p ~/.dbt
           cat <<EOF > ~/.dbt/profiles.yml
-          weather:
+          weather_dbt:
             target: dev
             outputs:
               dev:
