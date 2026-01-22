@@ -22,7 +22,6 @@ def run_pipeline():
     logger.info("JSON ingestion complete")
 
     run_fact_weather_current()
-    run_fact_weather_daily()
     logger.info("CSV transformations complete")
 
     conn = get_snowflake_connection()
