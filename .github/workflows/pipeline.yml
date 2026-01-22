@@ -33,6 +33,7 @@ jobs:
           SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
           SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
         run: |
+          echo "OPENWEATHER_API_KEY is set? -> ${OPENWEATHER_API_KEY:+YES}"
           python -m scripts.run_pipeline
         
       - name: Install dbt
