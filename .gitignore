@@ -9,6 +9,7 @@ dbt_weather/target/
 dbt_weather/logs/
 dbt_weather/dbt_packages/
 dbt_weather/.user.yml
+dbt_weather/profiles.yml
 
 logs/
 
