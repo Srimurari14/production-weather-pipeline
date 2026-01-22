@@ -33,7 +33,7 @@ jobs:
           SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
           SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
         run: |
-          python src/run_pipeline.py
+          python scripts.run_pipeline.py
         
       - name: Install dbt
         run: pip install dbt-snowflake
