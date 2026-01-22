@@ -1,13 +1,14 @@
 {{ 
   config(
     materialized = 'incremental',
-    unique_key = ['location_id', 'date_time']
+    unique_key = ['location_id', 'event_ts']
   ) 
 }}
 
 SELECT
     location_id,
-    date_time,
+    event_ts,
+    event_hour,
     temperature,
     feels_like,
     temp_min,
@@ -18,11 +19,11 @@ SELECT
     wind_direction,
     cloud_cover,
     weather_description
-FROM {{ref('stg_fact_weather_current')}}
+FROM {{ ref('stg_fact_weather_current') }}
 
 {% if is_incremental() %}
-where date_time > coalesce(
-    (select max(date_time) from {{ this }}),
-    to_timestamp('1900-01-01')
+WHERE event_ts > (
+    SELECT COALESCE(MAX(event_ts), TO_TIMESTAMP('1900-01-01'))
+    FROM {{ this }}
 )
 {% endif %}
